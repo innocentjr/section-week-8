@@ -25,7 +25,7 @@ def params_unique_combination(baseurl, params_d, private_keys=["api_key"]):
             res.append("{}-{}".format(k, params_d[k]))
     return baseurl + "_".join(res)
 
-def search_flickr(key, value):
+def search_flickr(tag, key, value):
     if not FLICKR_API_KEY:
         raise Exception('Flickr API Key is missing!')
 
@@ -67,6 +67,7 @@ class Photo:
 CACHE_DICTION = load_cache_json()
 if DEBUG:
     print(CACHE_DICTION)
+
 
 results = search_flickr('sunset summer')
 

@@ -5,6 +5,15 @@ from config import FLICKR_API_KEY
 CACHE_FNAME = 'cache_file.json'
 DEBUG = False
 
+params_diction = {
+    "method": "flickr.photos.search",
+        "format": "json",
+            "api_key": FLICKR_API_KEY,
+            "tags": tags,
+            "per_page": 10,
+            "nojsoncallback": 1
+    }
+
 def load_cache_json():
     # global CACHE_DICTION
     try:
@@ -25,22 +34,13 @@ def params_unique_combination(baseurl, params_d, private_keys=["api_key"]):
             res.append("{}-{}".format(k, params_d[k]))
     return baseurl + "_".join(res)
 
-def search_flickr(tag, key, value):
+def search_flickr(key, value):
     if not FLICKR_API_KEY:
         raise Exception('Flickr API Key is missing!')
 
     baseurl = "https://api.flickr.com/services/rest/"
-        params_diction = {
-            "method": "flickr.photos.search",
-            "format": "json",
-            "api_key": FLICKR_API_KEY,
-            "tags": tags,
-            "per_page": 10,
-            "nojsoncallback": 1
-        }
     diction = {key:value}
     params_diction.update(diction)
-
 
     unique_ident = params_unique_combination(baseurl,params_diction)
     if unique_ident in CACHE_DICTION:
@@ -68,8 +68,10 @@ CACHE_DICTION = load_cache_json()
 if DEBUG:
     print(CACHE_DICTION)
 
+key = str(input("Please enter the key"))
+value = str(input("Please enter the key's value"))
 
-results = search_flickr('sunset summer')
+results = search_flickr(key, value)
 
 photos_list = []
 for r in results['photos']['photo']:
